@@ -1,2 +1,4 @@
 # peko-dump-action
-Mysql Backup GH Action
+Mysql Shell Backup GH Action.
+
+Attention: This is not ready for production.

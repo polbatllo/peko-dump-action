@@ -1,0 +1,30 @@
+name: 'MysqlSh Backup Action'
+description: 'Easy Mysql-Shell Backups and upload to S3'
+author: 'Pol Batlló'
+
+inputs:
+  db_username:
+    description: 'Database username'
+    required: true
+  db_host:
+    description: 'Database host'
+    required: true
+  db_password:
+    description: 'Database password'
+    required: true
+  identifier:
+    description: 'Identifier of the backup'
+    required: true
+  schemas:
+    description: 'List of schemas to backup'
+    required: true
+  excluded_tables:
+    description: 'List of tables to exclude. Leave empty to backup all tables'
+    required: true
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+
+branding:
+  icon: 'archive'
+  color: 'gray-dark'
