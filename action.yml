@@ -21,6 +21,21 @@ inputs:
   excluded_tables:
     description: 'List of tables to exclude. Leave empty to backup all tables'
     required: true
+  s3_key:
+    description: 'S3 key'
+    required: true
+  s3_secret:
+    description: 'S3 secret'
+    required: true
+  s3_bucket:
+    description: 'S3 bucket'
+    required: true
+  aws_region:
+    description: 'AWS region'
+    required: true
+  aws_folder_path:
+    description: 'AWS folder path'
+    required: true
 runs:
   using: 'docker'
   image: 'Dockerfile'
