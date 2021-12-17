@@ -45,7 +45,6 @@ function putS3
        "https://$bucket.s3-${INPUT_AWS_REGION}.amazonaws.com/${aws_path}/${file_path##/*/}"
 }
 
-# backups-mysqlsh/backups-production/backups/erikalust.1512211232.tar.gz
 echo "Sending output to S3: Bucket: ${INPUT_S3_BUCKET}, Path: ${INPUT_AWS_FOLDER_PATH}/${FILENAME}"
 putS3 /backups/${FILENAME} ${INPUT_AWS_FOLDER_PATH}
 echo "Finished sending output to S3, cleaning up"
