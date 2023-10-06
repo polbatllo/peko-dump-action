@@ -36,6 +36,9 @@ inputs:
   aws_folder_path:
     description: 'AWS folder path'
     required: true
+  mysql_ssl_ca:
+    description: 'MYSQL ATTR SSL CA'
+    required: false
 runs:
   using: 'docker'
   image: 'Dockerfile'
