@@ -39,6 +39,9 @@ inputs:
   mysql_ssl_ca:
     description: 'MYSQL ATTR SSL CA'
     required: false
+  skip_ddl:
+    description: 'Skips DDL export'
+    required: false
 runs:
   using: 'docker'
   image: 'Dockerfile'

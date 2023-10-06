@@ -17,7 +17,9 @@ if [ -n "${INPUT_MYSQL_SSL_CA}" ]; then
   ssl_parameters="--ssl-mode=VERIFY_IDENTITY --ssl-ca=${INPUT_MYSQL_SSL_CA}"
 fi
 
-mysqlsh ${INPUT_DB_USERNAME}@${INPUT_DB_HOST} --password=${INPUT_DB_PASSWORD} ${ssl_parameters} -e "util.dumpSchemas([${INPUT_SCHEMAS}], '/tmp/${INPUT_IDENTIFIER}/ddl', {showProgress: true, consistent: false, events: false, routines: false, triggers: false, threads: 30, bytesPerChunk: '100M', ddlOnly: true})"
+if [ "${INPUT_SKIP_DDL}" != "true" ]; then
+  mysqlsh ${INPUT_DB_USERNAME}@${INPUT_DB_HOST} --password=${INPUT_DB_PASSWORD} ${ssl_parameters} -e "util.dumpSchemas([${INPUT_SCHEMAS}], '/tmp/${INPUT_IDENTIFIER}/ddl', {showProgress: true, consistent: false, events: false, routines: false, triggers: false, threads: 30, bytesPerChunk: '100M', ddlOnly: true})"
+fi
 mysqlsh ${INPUT_DB_USERNAME}@${INPUT_DB_HOST} --password=${INPUT_DB_PASSWORD} ${ssl_parameters} -e "util.dumpSchemas([${INPUT_SCHEMAS}], '/tmp/${INPUT_IDENTIFIER}/data', {showProgress: true, consistent: false, events: false, routines: false, triggers: false, threads: 30, bytesPerChunk: '100M', dataOnly: true, excludeTables: [${INPUT_EXCLUDED_TABLES}]})"
 echo "Compressing dump"
 cd /tmp
