@@ -13,6 +13,7 @@ mkdir /backups
 # Define the SSL parameters in a variable
 ssl_parameters=""
 if [ -n "${INPUT_MYSQL_SSL_CA}" ]; then
+  echo "Using SSL CA connection ${INPUT_MYSQL_SSL_CA}"
   ssl_parameters="--ssl-mode=VERIFY_IDENTITY --ssl-ca=${INPUT_MYSQL_SSL_CA}"
 fi
 
