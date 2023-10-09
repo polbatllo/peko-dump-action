@@ -17,7 +17,7 @@ if [ -n "${INPUT_MYSQL_SSL_CA}" ]; then
   ssl_parameters="--ssl-mode=VERIFY_IDENTITY --ssl-ca=${INPUT_MYSQL_SSL_CA}"
 fi
 
-if [ "${INPUT_USE_PLANET_SCALE_DDL}" != "true" ]; then
+if [ "${INPUT_USE_PLANET_SCALE_DDL}" == "true" ]; then
   echo "Using planet scale schema exporter"
   pscale branch schema vapor main --service-token "${INPUT_PS_SERVICE_TOKEN}" --service-token-id "${INPUT_PS_TOKEN_ID}"  --org "${INPUT_PS_ORG}" > /tmp/"${INPUT_IDENTIFIER}"/ddl
 
