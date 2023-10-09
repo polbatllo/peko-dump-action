@@ -43,6 +43,15 @@ inputs:
     description: 'Use PlanetScale DDL export method'
     required: false
     default: 'false'
+  ps_service_token:
+    description: 'Planet Scale service token'
+    required: false
+  ps_token_id:
+    description: 'Planet Scale token id'
+    required: false
+  ps_org:
+    description: 'Planet Scale organization name'
+    required: false
   threads:
     description: 'Number of threads to be executed in parallel'
     required: false
