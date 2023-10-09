@@ -17,8 +17,20 @@ if [ -n "${INPUT_MYSQL_SSL_CA}" ]; then
   ssl_parameters="--ssl-mode=VERIFY_IDENTITY --ssl-ca=${INPUT_MYSQL_SSL_CA}"
 fi
 
-mysqlsh ${INPUT_DB_USERNAME}@${INPUT_DB_HOST} --password=${INPUT_DB_PASSWORD} ${ssl_parameters} -e "util.dumpSchemas([${INPUT_SCHEMAS}], '/tmp/${INPUT_IDENTIFIER}/ddl', {showProgress: true, consistent: false, events: false, routines: false, triggers: false, threads: 30, bytesPerChunk: '100M', ddlOnly: true})"
-mysqlsh ${INPUT_DB_USERNAME}@${INPUT_DB_HOST} --password=${INPUT_DB_PASSWORD} ${ssl_parameters} -e "util.dumpSchemas([${INPUT_SCHEMAS}], '/tmp/${INPUT_IDENTIFIER}/data', {showProgress: true, consistent: false, events: false, routines: false, triggers: false, threads: 30, bytesPerChunk: '100M', dataOnly: true, excludeTables: [${INPUT_EXCLUDED_TABLES}]})"
+if [ "${INPUT_USE_PLANET_SCALE_DDL}" != "true" ]; then
+  echo "Using planet scale schema exporter"
+  wget https://github.com/planetscale/cli/releases/download/v0.156.0/pscale_0.156.0_linux_amd64.deb
+  apt-get install pscale_0.156.0_linux_amd64.deb
+  pscale branch schema vapor main --service-token "${INPUT_PS_SERVICE_TOKEN}" --service-token-id "${INPUT_PS_TOKEN_ID}"  --org "${INPUT_PS_ORG}" > /tmp/"${INPUT_IDENTIFIER}"/ddl
+
+else
+  echo "Using default schema exporter"
+  mysqlsh ${INPUT_DB_USERNAME}@${INPUT_DB_HOST} --password=${INPUT_DB_PASSWORD} ${ssl_parameters} -e "util.dumpSchemas([${INPUT_SCHEMAS}], '/tmp/${INPUT_IDENTIFIER}/ddl', {showProgress: true, consistent: false, events: false, routines: false, triggers: false, threads: ${INPUT_THREADS}, bytesPerChunk: '${INPUT_CHUNK_SIZE}M', ddlOnly: true})"
+fi
+
+echo "Starting data export with ${INPUT_THREADS} threads and a chink size of ${INPUT_CHUNK_SIZE}M"
+mysqlsh ${INPUT_DB_USERNAME}@${INPUT_DB_HOST} --password=${INPUT_DB_PASSWORD} ${ssl_parameters} -e "util.dumpSchemas([${INPUT_SCHEMAS}], '/tmp/${INPUT_IDENTIFIER}/data', {showProgress: true, consistent: false, events: false, routines: false, triggers: false, threads: ${INPUT_THREADS}, bytesPerChunk: '${INPUT_CHUNK_SIZE}M', dataOnly: true, excludeTables: [${INPUT_EXCLUDED_TABLES}]})"
+
 echo "Compressing dump"
 cd /tmp
 tar -czf ${FILENAME} ${INPUT_IDENTIFIER}

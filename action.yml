@@ -39,6 +39,19 @@ inputs:
   mysql_ssl_ca:
     description: 'MYSQL ATTR SSL CA'
     required: false
+  use_planet_scale_ddl:
+    description: 'Use PlanetScale DDL export method'
+    required: false
+    default: 'false'
+  threads:
+    description: 'Number of threads to be executed in parallel'
+    required: false
+    default: '30'
+  chunk_size:
+    description: 'Chink size in megabytes'
+    required: false
+    default: '100'
+
 runs:
   using: 'docker'
   image: 'Dockerfile'
