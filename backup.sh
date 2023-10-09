@@ -21,7 +21,7 @@ if [ "${INPUT_SKIP_DDL}" != "true" ]; then
   mysqlsh ${INPUT_DB_USERNAME}@${INPUT_DB_HOST} --password=${INPUT_DB_PASSWORD} ${ssl_parameters} -e "util.dumpSchemas([${INPUT_SCHEMAS}], '/tmp/${INPUT_IDENTIFIER}/ddl', {showProgress: true, consistent: false, events: false, routines: false, triggers: false, threads: 30, bytesPerChunk: '100M', ddlOnly: true})"
   mysqlsh ${INPUT_DB_USERNAME}@${INPUT_DB_HOST} --password=${INPUT_DB_PASSWORD} ${ssl_parameters} -e "util.dumpSchemas([${INPUT_SCHEMAS}], '/tmp/${INPUT_IDENTIFIER}/data', {showProgress: true, consistent: false, events: false, routines: false, triggers: false, threads: 30, bytesPerChunk: '100M', dataOnly: true, excludeTables: [${INPUT_EXCLUDED_TABLES}]})"
 else
-    mysqlsh ${INPUT_DB_USERNAME}@${INPUT_DB_HOST} --password=${INPUT_DB_PASSWORD} ${ssl_parameters} -e "util.dumpSchemas([${INPUT_SCHEMAS}], '/tmp/${INPUT_IDENTIFIER}/data', {showProgress: true, consistent: false, events: false, routines: false, triggers: false, threads: 8, bytesPerChunk: '1M', dataOnly: true, excludeTables: [${INPUT_EXCLUDED_TABLES}]})"
+  mysqlsh ${INPUT_DB_USERNAME}@${INPUT_DB_HOST} --password=${INPUT_DB_PASSWORD} ${ssl_parameters} -e "util.dumpSchemas([${INPUT_SCHEMAS}], '/tmp/${INPUT_IDENTIFIER}/data', {showProgress: true, consistent: false, events: false, routines: false, triggers: false, threads: 8, bytesPerChunk: '1M', dataOnly: true, excludeTables: [${INPUT_EXCLUDED_TABLES}]})"
 fi
 echo "Compressing dump"
 cd /tmp
