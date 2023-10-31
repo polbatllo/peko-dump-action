@@ -22,11 +22,11 @@ if [ "${INPUT_USE_PLANET_SCALE_DDL}" == "true" ]; then
   pscale branch schema vapor main --service-token "${INPUT_PS_SERVICE_TOKEN}" --service-token-id "${INPUT_PS_TOKEN_ID}" --org "${INPUT_PS_ORG}" > /tmp/"${INPUT_IDENTIFIER}"/ddl
 else
   echo "Using default schema exporter"
-  mysqlsh ${INPUT_DB_USERNAME}@${INPUT_DB_HOST} --password=${INPUT_DB_PASSWORD} ${ssl_parameters} -e "util.dumpSchemas([${INPUT_SCHEMAS}], '/tmp/${INPUT_IDENTIFIER}/ddl', {showProgress: true, consistent: false, events: false, routines: false, triggers: false, threads: ${INPUT_THREADS}, bytesPerChunk: '${INPUT_CHUNK_SIZE}M', ddlOnly: true})"
+  mysqlsh ${INPUT_DB_USERNAME}@${INPUT_DB_HOST} --password=${INPUT_DB_PASSWORD} ${ssl_parameters} -e "util.dumpSchemas([${INPUT_SCHEMAS}], '/tmp/${INPUT_IDENTIFIER}/ddl', {showProgress: true, consistent: false, events: false, routines: false, triggers: false, threads: ${INPUT_THREADS}, bytesPerChunk: '${INPUT_CHUNK_SIZE}', ddlOnly: true})"
 fi
 
 echo "Starting data export with ${INPUT_THREADS} threads and a chunk size of ${INPUT_CHUNK_SIZE}M"
-mysqlsh ${INPUT_DB_USERNAME}@${INPUT_DB_HOST} --password=${INPUT_DB_PASSWORD} ${ssl_parameters} -e "util.dumpSchemas([${INPUT_SCHEMAS}], '/tmp/${INPUT_IDENTIFIER}/data', {showProgress: true, consistent: false, events: false, routines: false, triggers: false, threads: ${INPUT_THREADS}, bytesPerChunk: '512k', dataOnly: true, excludeTables: [${INPUT_EXCLUDED_TABLES}]})"
+mysqlsh ${INPUT_DB_USERNAME}@${INPUT_DB_HOST} --password=${INPUT_DB_PASSWORD} ${ssl_parameters} -e "util.dumpSchemas([${INPUT_SCHEMAS}], '/tmp/${INPUT_IDENTIFIER}/data', {showProgress: true, consistent: false, events: false, routines: false, triggers: false, threads: ${INPUT_THREADS}, bytesPerChunk: '${INPUT_CHUNK_SIZE}', dataOnly: true, excludeTables: [${INPUT_EXCLUDED_TABLES}]})"
 
 echo "Compressing dump"
 cd /tmp
