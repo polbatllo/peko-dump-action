@@ -27,12 +27,8 @@ fi
 
 echo "Starting data export with ${INPUT_THREADS} threads and a chunk size of ${INPUT_CHUNK_SIZE}"
 
-mysqlsh ${INPUT_DB_USERNAME}@${INPUT_DB_HOST} --password=${INPUT_DB_PASSWORD} ${ssl_parameters} --sql -e "select @@workload';"
-mysqlsh ${INPUT_DB_USERNAME}@${INPUT_DB_HOST} --password=${INPUT_DB_PASSWORD} ${ssl_parameters} --sql -e "set workload='OLAP';"
-mysqlsh ${INPUT_DB_USERNAME}@${INPUT_DB_HOST} --password=${INPUT_DB_PASSWORD} ${ssl_parameters} --sql -e "select @@workload';"
-
 mysqlsh ${INPUT_DB_USERNAME}@${INPUT_DB_HOST} --password=${INPUT_DB_PASSWORD} ${ssl_parameters} -e "util.dumpSchemas([${INPUT_SCHEMAS}], '/tmp/${INPUT_IDENTIFIER}/data', {showProgress: true, consistent: false, events: false, routines: false, triggers: false, threads: ${INPUT_THREADS}, bytesPerChunk: '${INPUT_CHUNK_SIZE}', dataOnly: true, excludeTables: [${INPUT_EXCLUDED_TABLES}]})"
-mysqlsh ${INPUT_DB_USERNAME}@${INPUT_DB_HOST} --password=${INPUT_DB_PASSWORD} ${ssl_parameters} -e "util.dumpTables('vapor', ['bookingsync_events'], '/tmp/${INPUT_IDENTIFIER}/data', {'where' : {'vapor.bookingsync_events': 'team_id=1', 'vapor.bookingsync_events': 'created_at > CURRENT_DATE - INTERVAL 1 MONTH'}})"
+mysqlsh ${INPUT_DB_USERNAME}@${INPUT_DB_HOST} --password=${INPUT_DB_PASSWORD} ${ssl_parameters} -e "\sql set workload='OLAP'; util.dumpTables('vapor', ['bookingsync_events'], '/tmp/${INPUT_IDENTIFIER}/data', {'where' : {'vapor.bookingsync_events': 'team_id=1', 'vapor.bookingsync_events': 'created_at > CURRENT_DATE - INTERVAL 1 MONTH'}})"
 
 echo "Compressing dump"
 cd /tmp
