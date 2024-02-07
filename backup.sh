@@ -27,8 +27,8 @@ fi
 
 echo "Starting data export with ${INPUT_THREADS} threads and a chunk size of ${INPUT_CHUNK_SIZE}"
 
-mysqlsh ${INPUT_DB_USERNAME}@${INPUT_DB_HOST} --password=${INPUT_DB_PASSWORD} ${ssl_parameters} -e "\sql SET workload='olap'; util.dumpSchemas([${INPUT_SCHEMAS}], '/tmp/${INPUT_IDENTIFIER}/data', {showProgress: true, consistent: false, events: false, routines: false, triggers: false, threads: ${INPUT_THREADS}, bytesPerChunk: '${INPUT_CHUNK_SIZE}', dataOnly: true, excludeTables: [${INPUT_EXCLUDED_TABLES}]})"
-mysqlsh ${INPUT_DB_USERNAME}@${INPUT_DB_HOST} --password=${INPUT_DB_PASSWORD} ${ssl_parameters} -f backupEcents.js
+mysqlsh ${INPUT_DB_USERNAME}@${INPUT_DB_HOST} --password=${INPUT_DB_PASSWORD} ${ssl_parameters} -f backupTables.js
+mysqlsh ${INPUT_DB_USERNAME}@${INPUT_DB_HOST} --password=${INPUT_DB_PASSWORD} ${ssl_parameters} -f backupEvents.js
 echo "Compressing dump"
 cd /tmp
 tar -czf ${FILENAME} ${INPUT_IDENTIFIER}

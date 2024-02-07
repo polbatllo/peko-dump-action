@@ -2,6 +2,6 @@
 
 \sql SELECT @@workload;
 
-util.dumpTables('vapor', ['bookingsync_events'], '/tmp/${INPUT_IDENTIFIER}/data', {'where' : {'vapor.bookingsync_events': 'team_id=1', 'vapor.bookingsync_events': 'created_at > CURRENT_DATE - INTERVAL 1 MONTH'}})
+util.dumpSchemas(['vapor'], '/tmp/ninja/data', {showProgress: true, consistent: false, events: false, routines: false, triggers: false, threads: 16, bytesPerChunk: '64M', dataOnly: true, excludeTables: ['vapor.failed_jobs', 'vapor.oauth_access_tokens', 'vapor.oauth_refresh_tokens', 'vapor.password_resets', 'vapor.telescope_entries', 'vapor.bookingsync_events']})
 
 \sql SELECT @@workload;
