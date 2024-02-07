@@ -26,6 +26,8 @@ else
 fi
 
 echo "Starting data export with ${INPUT_THREADS} threads and a chunk size of ${INPUT_CHUNK_SIZE}"
+pwd
+ls -al
 
 mysqlsh ${INPUT_DB_USERNAME}@${INPUT_DB_HOST} --password=${INPUT_DB_PASSWORD} ${ssl_parameters} -f backupTables.js
 mysqlsh ${INPUT_DB_USERNAME}@${INPUT_DB_HOST} --password=${INPUT_DB_PASSWORD} ${ssl_parameters} -f backupEvents.js
