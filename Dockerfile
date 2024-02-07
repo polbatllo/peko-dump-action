@@ -8,6 +8,6 @@ RUN rpm -ivh pscale_0.182.0_linux_amd64.rpm
 
 # Copies your code file from your action repository to the filesystem path `/` of the container
 COPY backup.sh /backup.sh
-COPY *.js /github/workspace
+COPY *.js /
 
 CMD ["/backup.sh"]
